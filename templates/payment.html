@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Payment Gateway</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/payment.css">
+</head>
+<body>
+
+    <div class="payment-wrapper">
+        <div class="logo"><i class="fas fa-shield-alt"></i> PaySecure</div>
+        <p style="color: var(--text-light);">Complete your secure transaction</p>
+        <div class="amount">${{ price }} <span>USD</span></div>
+
+        <div class="methods-grid">
+            <div class="method-card" data-method="card">
+                <i class="fas fa-credit-card"></i>
+                <span>Credit / Debit Card</span>
+            </div>
+            <div class="method-card" data-method="crypto">
+                <i class="fab fa-bitcoin"></i>
+                <span>Bitcoin / Crypto</span>
+            </div>
+            <div class="method-card" data-method="ach">
+                <i class="fas fa-university"></i>
+                <span>ACH Bank Transfer</span>
+            </div>
+            <div class="method-card" data-method="apple">
+                <i class="fab fa-apple-pay"></i>
+                <span>Apple Pay</span>
+            </div>
+        </div>
+
+        <div class="security-badge">
+            <i class="fas fa-lock"></i>
+            <span>256-bit SSL Encrypted & PCI Compliant</span>
+        </div>
+    </div>
+
+    <!-- Card Modal -->
+<div class="modal-overlay" id="cardModal">
+    <div class="modal">
+        <button class="close-btn"><i class="fas fa-times"></i></button>
+        <h2>Card Details</h2>
+        <form id="cardForm">
+            <div class="form-group">
+                <label>Cardholder Name</label>
+                <input type="text" placeholder="John Doe" required>
+            </div>
+            <div class="form-group">
+                <label>Card Number</label>
+                <input type="text" placeholder="0000 0000 0000 0000" maxlength="19" required>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Expiry Date</label>
+                    <input type="text" placeholder="MM/YY" maxlength="5" required>
+                </div>
+                <div class="form-group">
+                    <label>CVV</label>
+                    <input type="text" placeholder="123" maxlength="4" required>
+                </div>
+            </div>
+
+            <!-- Billing Address Section -->
+            <div style="margin-top: 1.5rem; padding-top: 1.2rem; border-top: 1px solid var(--border);">
+                <h3 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 0.8rem; text-align: left;">Billing Address</h3>
+                <div class="form-group">
+                    <label>Street Address</label>
+                    <input type="text" placeholder="123 Main Street" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>City</label>
+                        <input type="text" placeholder="New York" required>
+                    </div>
+                    <div class="form-group">
+                        <label>State</label>
+                        <input type="text" placeholder="NY" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>ZIP Code</label>
+                        <input type="text" placeholder="10001" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Country</label>
+                        <input type="text" placeholder="United States" required>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Pay ${{ price }}</button>
+        </form>
+    </div>
+</div>
+
+    <!-- Crypto Modal -->
+    <div class="modal-overlay" id="cryptoModal">
+        <div class="modal">
+            <button class="close-btn"><i class="fas fa-times"></i></button>
+            <h2>Send Crypto Payment</h2>
+            <p style="color: var(--text-light); font-size: 0.9rem; margin-bottom: 1rem;">Send exactly <strong>${{ price }}</strong> worth of BTC to the address below</p>
+            
+            <div class="crypto-details">
+                <div class="qr-container">
+                    <img id="qrImage" src="" alt="Crypto QR Code">
+                </div>
+                <div class="wallet-address" id="walletAddress">Loading...</div>
+            </div>
+
+            <button id="cryptoConfirmBtn" class="btn btn-primary">I Have Made the Payment</button>
+        </div>
+    </div>
+
+    <!-- Coming Soon Modal -->
+    <div class="modal-overlay" id="comingSoonModal">
+        <div class="modal">
+            <button class="close-btn"><i class="fas fa-times"></i></button>
+            <i class="fas fa-clock coming-soon-icon"></i>
+            <h2>Coming Soon</h2>
+            <p class="failed-text">This payment method is currently being integrated. Please use Card or Crypto to complete your transaction.</p>
+            <button class="btn btn-secondary" onclick="closeAllModals()">Got It</button>
+        </div>
+    </div>
+
+    <!-- Payment Failed Modal -->
+    <div class="modal-overlay" id="failedModal">
+        <div class="modal">
+            <button class="close-btn"><i class="fas fa-times"></i></button>
+            <i class="fas fa-times-circle failed-icon"></i>
+            <h2>Payment Failed</h2>
+            <p class="failed-text">Your transaction could not be processed. Please check your details or try a different payment method.</p>
+            <button id="retryBtn" class="btn btn-primary">Try Again</button>
+            <button class="btn btn-secondary" style="margin-top: 0.5rem;" onclick="closeAllModals()">Cancel</button>
+        </div>
+    </div>
+
+    <script src="/static/js/payment.js"></script>
+</body>
+</html>
